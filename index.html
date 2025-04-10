@@ -1,157 +1,155 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EditMaster Academy</title>
+  <title>EditMaster Quiz</title>
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       background-color: #1c1c1c;
       color: #fff;
-    }
-    header {
-      background: linear-gradient(90deg, #007BFF, #FF007F);
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-    header p {
-      font-size: 1.2rem;
-      margin: 1rem 0 2rem;
-    }
-    header button {
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      background-color: #fff;
-      color: #1c1c1c;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    section {
       padding: 2rem;
-      max-width: 900px;
-      margin: auto;
     }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    .feature {
-      background-color: #2b2d42;
-      padding: 1rem;
-      border-radius: 8px;
+
+    h1, h2 {
       text-align: center;
     }
-    .recommendation {
-      margin-top: 3rem;
+
+    .question {
+      margin-bottom: 2rem;
     }
-    select, .recommendation-result, button.submit-btn {
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    select {
       width: 100%;
       padding: 1rem;
-      margin-top: 1rem;
       font-size: 1rem;
       border-radius: 6px;
       border: none;
+      margin-top: 0.5rem;
     }
-    .submit-btn {
+
+    button {
       background-color: #FF007F;
       color: white;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      display: block;
+      margin: 2rem auto;
     }
-    .recommendation-result {
+
+    .result {
       background-color: #007BFF;
       color: white;
+      padding: 1.5rem;
+      border-radius: 6px;
       text-align: center;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #aaa;
+      display: none;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Master Video Editing in Just 4 Weeks</h1>
-    <p>Join EditMaster Academy and start building your portfolio today.</p>
-    <button onclick="window.alert('Redirecting to free lesson...')">Start Free Lesson</button>
-  </header>
+  <h1>Find Your Ideal EditMaster Course</h1>
+  <p style="text-align:center;">Answer a few quick questions and get your personalized recommendation.</p>
 
-  <section>
-    <h2>Why Choose EditMaster?</h2>
-    <div class="features">
-      <div class="feature">🎓 Certification & Job Support</div>
-      <div class="feature">🧩 Project-Based Learning</div>
-      <div class="feature">💬 1-on-1 Live Coaching</div>
-      <div class="feature">🚀 Career Monetization Training</div>
-    </div>
+  <div class="question">
+    <label for="experience">1. What’s your current video editing experience?</label>
+    <select id="experience">
+      <option value="">Choose one...</option>
+      <option value="none">No experience</option>
+      <option value="some">Basic editing skills</option>
+      <option value="experienced">Experienced editor</option>
+    </select>
+  </div>
 
-    <div class="recommendation">
-      <h2>Find the Right Course for You</h2>
-      <label for="goalSelect">What is your main goal?</label>
-      <select id="goalSelect">
-        <option value="">Select an option...</option>
-        <option value="beginner">I'm a complete beginner</option>
-        <option value="freelancer">I want to start freelancing</option>
-        <option value="youtuber">I'm a content creator</option>
-      </select>
-      <button class="submit-btn" onclick="sendToWebhook()">Submit</button>
-      <div id="webhookResult" class="recommendation-result" style="display: none;"></div>
-    </div>
-  </section>
+  <div class="question">
+    <label for="goal">2. What’s your main goal?</label>
+    <select id="goal">
+      <option value="">Choose one...</option>
+      <option value="freelance">Become a freelance editor</option>
+      <option value="content_creator">Grow as a YouTuber or content creator</option>
+      <option value="job">Get hired in a media company</option>
+    </select>
+  </div>
 
-  <footer>
-    © 2025 EditMaster Academy | Built with Firebase Studio ✨
-  </footer>
+  <div class="question">
+    <label for="time">3. How much time can you dedicate each week?</label>
+    <select id="time">
+      <option value="">Choose one...</option>
+      <option value="low">1–2 hours</option>
+      <option value="medium">3–5 hours</option>
+      <option value="high">6+ hours</option>
+    </select>
+  </div>
+
+  <button onclick="submitQuiz()">Get My Course Recommendation</button>
+
+  <div id="result" class="result"></div>
 
   <script>
-    function sendToWebhook() {
-      const select = document.getElementById('goalSelect');
-      const choice = select.value;
-      const resultBox = document.getElementById('webhookResult');
+    function submitQuiz() {
+      const experience = document.getElementById('experience').value;
+      const goal = document.getElementById('goal').value;
+      const time = document.getElementById('time').value;
+      const resultBox = document.getElementById('result');
 
-      if (!choice) {
-        resultBox.innerText = '⚠️ Please choose a goal first.';
-        resultBox.style.display = 'block';
+      if (!experience || !goal || !time) {
+        resultBox.innerText = "⚠️ Please answer all questions.";
+        resultBox.style.display = "block";
         return;
       }
 
-      const webhookURL = 'https://hook.eu2.make.com/f6lnss3llupo2c6ycfv4qujzyzfodx2l';
+      // Determine recommendation
+      let course = '';
+      if (experience === 'none') {
+        course = 'Editing Fundamentals';
+      } else if (goal === 'freelance') {
+        course = 'Freelance Career Bootcamp';
+      } else if (goal === 'content_creator') {
+        course = 'Social Media Video Editing';
+      } else {
+        course = 'Portfolio Pro Course';
+      }
 
-      const data = {
-        goal: choice,
-        timestamp: new Date().toISOString()
+      // Show result to user
+      resultBox.innerText = `✅ Based on your answers, we recommend: "${course}"`;
+      resultBox.style.display = "block";
+
+      // Prepare webhook payload
+      const payload = {
+        experience: experience,
+        goal: goal,
+        time: time,
+        recommendedCourse: course,
+        submittedAt: new Date().toISOString()
       };
 
-      fetch(webhookURL, {
+      // Send to webhook
+      fetch("https://hook.eu2.make.com/f6lnss3llupo2c6ycfv4qujzyzfodx2l", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       })
-      .then(res => {
-        if (res.ok) {
-          resultBox.innerText = '✅ Selection sent successfully!';
-        } else {
-          resultBox.innerText = '❌ Failed to send selection.';
+      .then(response => {
+        if (!response.ok) {
+          console.error("Webhook submission failed.");
         }
-        resultBox.style.display = 'block';
       })
-      .catch(err => {
-        resultBox.innerText = '⚠️ Error sending to webhook.';
-        resultBox.style.display = 'block';
-        console.error(err);
+      .catch(error => {
+        console.error("Webhook error:", error);
       });
     }
   </script>
