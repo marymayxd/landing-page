@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,13 +54,18 @@
     .recommendation {
       margin-top: 3rem;
     }
-    select, .recommendation-result {
+    select, .recommendation-result, button.submit-btn {
       width: 100%;
       padding: 1rem;
       margin-top: 1rem;
       font-size: 1rem;
       border-radius: 6px;
       border: none;
+    }
+    .submit-btn {
+      background-color: #FF007F;
+      color: white;
+      cursor: pointer;
     }
     .recommendation-result {
       background-color: #007BFF;
@@ -93,13 +99,14 @@
     <div class="recommendation">
       <h2>Find the Right Course for You</h2>
       <label for="goalSelect">What is your main goal?</label>
-      <select id="goalSelect" onchange="showRecommendation()">
+      <select id="goalSelect">
         <option value="">Select an option...</option>
         <option value="beginner">I'm a complete beginner</option>
         <option value="freelancer">I want to start freelancing</option>
         <option value="youtuber">I'm a content creator</option>
       </select>
-      <div id="result" class="recommendation-result" style="display: none;"></div>
+      <button class="submit-btn" onclick="sendToWebhook()">Submit</button>
+      <div id="webhookResult" class="recommendation-result" style="display: none;"></div>
     </div>
   </section>
 
@@ -108,19 +115,44 @@
   </footer>
 
   <script>
-    function showRecommendation() {
-      const value = document.getElementById('goalSelect').value;
-      const result = document.getElementById('result');
-      if (!value) return result.style.display = 'none';
+    function sendToWebhook() {
+      const select = document.getElementById('goalSelect');
+      const choice = select.value;
+      const resultBox = document.getElementById('webhookResult');
 
-      const messages = {
-        beginner: 'We recommend: "Editing Fundamentals" – Learn Adobe Premiere Pro from scratch.',
-        freelancer: 'We recommend: "Freelance Career Bootcamp" – Build your brand and land clients.',
-        youtuber: 'We recommend: "Social Media Video Editing" – Edit for YouTube, TikTok, and Instagram.'
+      if (!choice) {
+        resultBox.innerText = '⚠️ Please choose a goal first.';
+        resultBox.style.display = 'block';
+        return;
+      }
+
+      const webhookURL = 'https://hook.eu2.make.com/f6lnss3llupo2c6ycfv4qujzyzfodx2l';
+
+      const data = {
+        goal: choice,
+        timestamp: new Date().toISOString()
       };
 
-      result.innerText = messages[value];
-      result.style.display = 'block';
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => {
+        if (res.ok) {
+          resultBox.innerText = '✅ Selection sent successfully!';
+        } else {
+          resultBox.innerText = '❌ Failed to send selection.';
+        }
+        resultBox.style.display = 'block';
+      })
+      .catch(err => {
+        resultBox.innerText = '⚠️ Error sending to webhook.';
+        resultBox.style.display = 'block';
+        console.error(err);
+      });
     }
   </script>
 </body>
