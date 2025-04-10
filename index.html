@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EditMaster Academy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #1c1c1c;
+      color: #fff;
+    }
+    header {
+      background: linear-gradient(90deg, #007BFF, #FF007F);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin: 1rem 0 2rem;
+    }
+    header button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: #fff;
+      color: #1c1c1c;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    section {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .feature {
+      background-color: #2b2d42;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .recommendation {
+      margin-top: 3rem;
+    }
+    select, .recommendation-result {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+    }
+    .recommendation-result {
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Master Video Editing in Just 4 Weeks</h1>
+    <p>Join EditMaster Academy and start building your portfolio today.</p>
+    <button onclick="window.alert('Redirecting to free lesson...')">Start Free Lesson</button>
+  </header>
+
+  <section>
+    <h2>Why Choose EditMaster?</h2>
+    <div class="features">
+      <div class="feature">🎓 Certification & Job Support</div>
+      <div class="feature">🧩 Project-Based Learning</div>
+      <div class="feature">💬 1-on-1 Live Coaching</div>
+      <div class="feature">🚀 Career Monetization Training</div>
+    </div>
+
+    <div class="recommendation">
+      <h2>Find the Right Course for You</h2>
+      <label for="goalSelect">What is your main goal?</label>
+      <select id="goalSelect" onchange="showRecommendation()">
+        <option value="">Select an option...</option>
+        <option value="beginner">I'm a complete beginner</option>
+        <option value="freelancer">I want to start freelancing</option>
+        <option value="youtuber">I'm a content creator</option>
+      </select>
+      <div id="result" class="recommendation-result" style="display: none;"></div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 EditMaster Academy | Built with Firebase Studio ✨
+  </footer>
+
+  <script>
+    function showRecommendation() {
+      const value = document.getElementById('goalSelect').value;
+      const result = document.getElementById('result');
+      if (!value) return result.style.display = 'none';
+
+      const messages = {
+        beginner: 'We recommend: "Editing Fundamentals" – Learn Adobe Premiere Pro from scratch.',
+        freelancer: 'We recommend: "Freelance Career Bootcamp" – Build your brand and land clients.',
+        youtuber: 'We recommend: "Social Media Video Editing" – Edit for YouTube, TikTok, and Instagram.'
+      };
+
+      result.innerText = messages[value];
+      result.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
